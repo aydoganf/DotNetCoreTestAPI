@@ -1,0 +1,17 @@
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestWebAPI.deps.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestWebAPI.runtimeconfig.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestWebAPI.runtimeconfig.dev.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestWebAPI.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.csprojAssemblyReference.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.csproj.CoreCompileInputs.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.RazorAssemblyInfo.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.RazorAssemblyInfo.cs
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.AssemblyInfoInputs.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.AssemblyInfo.cs
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.RazorTargetAssemblyInfo.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestWebAPI.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestBussiness.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\bin\Debug\netcoreapp2.1\TestBussiness.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestWebAPI\obj\Debug\netcoreapp2.1\TestWebAPI.csproj.CopyComplete

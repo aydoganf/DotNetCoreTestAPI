@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\faruk\\source\\repos\\NetCoreTestSolution\\TestBussiness\\TestBussiness.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\faruk\\source\\repos\\NetCoreTestSolution\\TestBussiness\\TestBussiness.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\faruk\\source\\repos\\NetCoreTestSolution\\TestBussiness\\TestBussiness.csproj",
+        "projectName": "TestBussiness",
+        "projectPath": "C:\\Users\\faruk\\source\\repos\\NetCoreTestSolution\\TestBussiness\\TestBussiness.csproj",
+        "packagesPath": "C:\\Users\\faruk\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\faruk\\source\\repos\\NetCoreTestSolution\\TestBussiness\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\faruk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "FluentNHibernate": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Mysql.Data": {
+              "target": "Package",
+              "version": "[8.0.16, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

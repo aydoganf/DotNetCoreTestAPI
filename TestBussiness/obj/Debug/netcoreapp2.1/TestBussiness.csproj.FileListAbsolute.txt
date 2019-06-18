@@ -1,0 +1,12 @@
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\bin\Debug\netcoreapp2.1\TestBussiness.deps.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\bin\Debug\netcoreapp2.1\TestBussiness.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.csproj.CoreCompileInputs.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.AssemblyInfoInputs.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.AssemblyInfo.cs
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\bin\Debug\netcoreapp2.1\TestBussiness.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.csproj.CopyComplete
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.csprojAssemblyReference.cache
