@@ -17,6 +17,7 @@ using TestBussiness.Repository;
 using TestBussiness.RepositoryService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using StructureMap;
+using TestBussiness.ServiceMessage.Builders;
 
 namespace TestWebAPI
 {
@@ -70,6 +71,7 @@ namespace TestWebAPI
                 {
                     s.Assembly("TestBussiness");
                     s.WithDefaultConventions();
+                    s.ConnectImplementationsToTypesClosing(typeof(IDtoBuilder<,>));
                 });
                 _.AddRegistry<ServiceRegistry>();
                 _.Populate(services);

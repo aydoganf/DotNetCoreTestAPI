@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 using TestBussiness.Entity;
 
-namespace TestBussiness.ServiceMessage
+namespace TestBussiness.ServiceMessage.Builders
 {
-    public class AccountInfo
+    public class AccountDto : IDto
     {
         [IgnoreDataMember]
         public int Id { get; set; }
@@ -17,14 +16,21 @@ namespace TestBussiness.ServiceMessage
         public DateTime CreateDate { get; set; }
         public decimal Balance { get; set; }
         public string AccountTypeKey { get; set; }
-        public AccountTypeInfo AccountType { get; set; }
+        public AccountTypeDto AccountType { get; set; }
     }
 
-    public class AccountInfoBuilder
+    public class AccountDtoBuilder : IDtoBuilder<AccountDto, Account>
     {
-        public static AccountInfo MapToDto(Account entity)
+        private readonly IDtoBuilder<AccountTypeDto, AccountType> accountTypeDtoBuilder;
+
+        public AccountDtoBuilder(IDtoBuilder<AccountTypeDto, AccountType> accountTypeDtoBuilder)
         {
-            return new AccountInfo()
+            this.accountTypeDtoBuilder = accountTypeDtoBuilder;
+        }
+
+        public AccountDto MapToDto(Account entity)
+        {
+            return new AccountDto()
             {
                 Id = entity.Id,
                 FirstName = entity.FirstName,
@@ -34,16 +40,16 @@ namespace TestBussiness.ServiceMessage
                 CreateDate = entity.CreateDate,
                 Balance = entity.Balance,
                 AccountTypeKey = entity.AccountType.TypeKey,
-                AccountType = AccountTypeInfoBuilder.MapToInfoInstance(entity.AccountType)
+                AccountType = accountTypeDtoBuilder.MapToDto(entity.AccountType)
             };
         }
 
-        public static List<AccountInfo> MapToInfoList(IEnumerable<Account> entities)
+        public IEnumerable<AccountDto> MapToDtoList(IEnumerable<Account> entities)
         {
-            List<AccountInfo> dtos = new List<AccountInfo>();
+            List<AccountDto> dtos = new List<AccountDto>();
             foreach (var entity in entities)
             {
-                dtos.Add(AccountInfoBuilder.MapToDto(entity));
+                dtos.Add(MapToDto(entity));
             }
             return dtos;
         }
