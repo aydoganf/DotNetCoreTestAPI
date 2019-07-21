@@ -18,6 +18,8 @@ using TestBussiness.RepositoryService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using StructureMap;
 using TestBussiness.ServiceMessage.Builders;
+using TestBussiness.ServiceMessage.Responses;
+using TestBussiness.ServiceMessage.Responses.Factories;
 
 namespace TestWebAPI
 {
@@ -55,11 +57,12 @@ namespace TestWebAPI
             app.UseMvc();
         }
 
-        public class ServiceRegistry : Registry
+        public class ControllerActionResponseServiceRegistry : Registry
         {
-            public ServiceRegistry()
+            public ControllerActionResponseServiceRegistry()
             {
-                //For<IAccountManager>().Use<AccountManager>();
+                For(typeof(IControllerActionItemResponseFactory<,>)).Use(typeof(ControllerActionItemResponseFactory<,>));
+                For(typeof(IControllerActionListResponseFactory<,>)).Use(typeof(ControllerActionListResponseFactory<,>));
             }
         }
 
@@ -71,9 +74,11 @@ namespace TestWebAPI
                 {
                     s.Assembly("TestBussiness");
                     s.WithDefaultConventions();
+                    s.ConnectImplementationsToTypesClosing(typeof(IControllerActionItemResponse<>));
+                    s.ConnectImplementationsToTypesClosing(typeof(IControllerActionListResponse<>));
                     s.ConnectImplementationsToTypesClosing(typeof(IDtoBuilder<,>));
                 });
-                _.AddRegistry<ServiceRegistry>();
+                _.AddRegistry<ControllerActionResponseServiceRegistry>();
                 _.Populate(services);
             });
 

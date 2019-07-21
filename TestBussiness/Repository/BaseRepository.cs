@@ -43,7 +43,7 @@ namespace TestBussiness.Repository
 
         public virtual T GetById(int id)
         {
-            return session.Load<T>(id, NHibernate.LockMode.Read);
+            return session.Get<T>(id, NHibernate.LockMode.Read);
         }
 
         public virtual void Delete(int id)

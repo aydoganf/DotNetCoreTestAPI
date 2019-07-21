@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestBussiness.Connection;
-using TestBussiness.Context;
 using TestBussiness.ServiceMessage;
 using TestBussiness.Entity;
 using TestBussiness.ManagerService;
 using TestBussiness.RepositoryService;
 using TestBussiness.ServiceMessage.Builders;
+using TestBussiness.ServiceMessage.Responses;
+using StructureMap;
+using TestBussiness.ServiceMessage.Responses.Factories;
 
 namespace TestWebAPI.Controllers
 {
@@ -19,71 +21,102 @@ namespace TestWebAPI.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly IAccountManager accountManagerService;
-        private readonly IDtoBuilder<AccountDto, Account> dtoBuilder;
-
-        public AccountsController(IAccountManager accountManagerService, IDtoBuilder<AccountDto, Account> dtoBuilder)
+        private readonly IControllerActionItemResponseFactory<AccountDto, Account> controllerActionItemResponseFactory;
+        private readonly IControllerActionListResponseFactory<AccountDto, Account> controllerActionListResponseFactory;
+        
+        public AccountsController(
+            IAccountManager accountManagerService,
+            IControllerActionItemResponseFactory<AccountDto,Account> controllerActionItemResponseFactory,
+            IControllerActionListResponseFactory<AccountDto, Account> controllerActionListResponseFactory)
         {
             this.accountManagerService = accountManagerService;
-            this.dtoBuilder = dtoBuilder;
+            this.controllerActionItemResponseFactory = controllerActionItemResponseFactory;
+            this.controllerActionListResponseFactory = controllerActionListResponseFactory;
         }
 
         // GET: api/Accounts
         [HttpGet]
-        public IEnumerable<AccountDto> Get()
+        public IControllerActionListResponse<AccountDto> Get()
         {
             List<Account> accounts = accountManagerService.GetAll();
             if (accounts.Count == 0)
-                return null;
-            return dtoBuilder.MapToDtoList(accounts);
+            {
+                return controllerActionListResponseFactory
+                    .NotFound("no account found");
+            }
+
+            return controllerActionListResponseFactory
+                .Success(accounts);
         }
 
         // GET: api/Accounts/5
         [HttpGet("{id}")]
-        public AccountDto Get(int id)
+        public IControllerActionItemResponse<AccountDto> Get(int id)
         {
             Account account = this.accountManagerService
                 .GetAccountById(id);
             if (account == null)
-                return null;
+            {
+                return controllerActionItemResponseFactory
+                    .NotFound(string.Format("{0} is not found with the given identifier", nameof(account)));
+            }
 
-            return dtoBuilder.MapToDto(account);
+            return controllerActionItemResponseFactory
+                .Success(account);
         }
 
         [HttpGet("accountNumber/{accountNumber}")]
-        public AccountDto GetAccountByAccountNumber(string accountNumber)
+        public IControllerActionItemResponse<AccountDto> GetAccountByAccountNumber(string accountNumber)
         {
             Account account = this.accountManagerService
                 .GetAccountByAccountNumber(accountNumber);
             if (account == null)
-                return null;
+            {
+                return controllerActionItemResponseFactory
+                    .NotFound(string.Format("{0} is not found with the given identifier", nameof(account)));
+            }
 
-            return dtoBuilder.MapToDto(account);
+            return controllerActionItemResponseFactory
+                .Success(account);
         }
 
         [HttpGet("identityNumber/{identityNumber}")]
-        public IEnumerable<AccountDto> GetAccountsByIdentityNumber(string identityNumber)
+        public IControllerActionListResponse<AccountDto> GetAccountsByIdentityNumber(string identityNumber)
         {
             List<Account> accounts = this.accountManagerService
                 .GetAccountListByIdentityNumber(identityNumber);
+            
             if (accounts.Count == 0)
-                return null;
+            {
+                return controllerActionListResponseFactory
+                    .NotFound(string.Format("no account found with the given {0}: {1}", 
+                        nameof(identityNumber), identityNumber));
+            }
 
-            return dtoBuilder.MapToDtoList(accounts);
+            return controllerActionListResponseFactory
+                .Success(accounts);
         }
 
         // POST: api/Accounts
         [HttpPost]
-        public AccountDto Post([FromBody] AccountDto accountDto)
+        public IControllerActionItemResponse<AccountDto> Post([FromBody] AccountDto accountDto)
         {
             Account account = this.accountManagerService
                 .CreateNewAccount(accountDto.FirstName, 
                 accountDto.LastName, 
                 accountDto.IdentityNumber, 
                 accountDto.AccountTypeKey);
-            if (account == null)
-                return null;
 
-            return dtoBuilder.MapToDto(account);
+            if (account == null)
+            {
+                return controllerActionItemResponseFactory
+                    .WithResponseCode("2")
+                    .WithResponseMessage("account did not created.")
+                    .BuildResponse();
+            }
+
+            return controllerActionItemResponseFactory
+                    .Success(account);
         }
 
         // PUT: api/Accounts/5
@@ -93,35 +126,49 @@ namespace TestWebAPI.Controllers
         }
 
         [HttpPut("deposit")]
-        public ActionResult<AccountDto> DepositAccount([FromBody] AccountBalanceInfoMessage message)
+        public IControllerActionItemResponse<AccountDto> DepositAccount([FromBody] AccountBalanceInfoMessage message)
         {
             bool isOk = accountManagerService.Deposit(message.AccountNumber, message.Amount);
             if (!isOk)
-                return BadRequest();
+            {
+                return controllerActionItemResponseFactory
+                    .WithResponseCode("2")
+                    .WithResponseMessage("deposit operation failed")
+                    .BuildResponse();
+            }
 
             Account account = accountManagerService.GetAccountByAccountNumber(message.AccountNumber);
-            return dtoBuilder.MapToDto(account);
 
+            return controllerActionItemResponseFactory
+                .Success(account);
         }
 
         [HttpPut("withdraw")]
-        public AccountDto WithdrawAccount([FromBody] AccountBalanceInfoMessage message)
+        public IControllerActionItemResponse<AccountDto> WithdrawAccount([FromBody] AccountBalanceInfoMessage message)
         {
             bool isOk = accountManagerService.Withdraw(message.AccountNumber, message.Amount);
             if (!isOk)
-                throw new Exception("not ok");
+            {
+                return controllerActionItemResponseFactory
+                    .WithResponseCode("2")
+                    .WithResponseMessage("withdraw operation failed")
+                    .BuildResponse();
+            }
 
             Account account = accountManagerService.GetAccountByAccountNumber(message.AccountNumber);
-            return dtoBuilder.MapToDto(account);
+
+            return controllerActionItemResponseFactory
+                .Success(account);
         }
 
         [HttpPut("ownerName")]
-        public AccountDto UpdateAccountOwnerName([FromBody] AccountDto accountInfo)
+        public IControllerActionItemResponse<AccountDto> UpdateAccountOwnerName([FromBody] AccountDto accountInfo)
         {
             Account account = accountManagerService
                 .SetAccountOwnerName(accountInfo.AccountNumber, accountInfo.FirstName, accountInfo.LastName);
 
-            return dtoBuilder.MapToDto(account);
+            return controllerActionItemResponseFactory
+                .Success(account);
         }
 
         // DELETE: api/ApiWithActions/5
