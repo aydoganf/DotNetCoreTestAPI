@@ -14,6 +14,7 @@ namespace TestBussiness.Mappers
             Id(o => o.Id).Column("AccountTypeId");
             Map(o => o.TypeKey).Column("TypeKey");
             Map(o => o.TypeName).Column("TypeName");
+            //HasMany(o => o.Accounts).KeyColumn("AccountTypeId").Inverse().Cascade.All();
         }
     }
 }

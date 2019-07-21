@@ -18,8 +18,12 @@ namespace TestBussiness.Mappers
             Map(o => o.FirstName).Column("FirstName");
             Map(o => o.IdentityNumber).Column("IdentityNumber");
             Map(o => o.LastName).Column("LastName");
+            //HasOne<AccountType>(o => o.AccountType)
+            //    .ForeignKey("fk_account_accounttype");
+            //.LazyLoad().Cascade.SaveUpdate();
+            //.PropertyRef(o => o.);
             References(o => o.AccountType, "AccountTypeId")
-                .ForeignKey("fk_account_accounttype");
+                .ForeignKey("fk_account_accounttype").Cascade.None(); //.LazyLoad().Cascade.SaveUpdate();
         }
     }
 }

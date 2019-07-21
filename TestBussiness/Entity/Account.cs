@@ -12,9 +12,8 @@ namespace TestBussiness.Entity
         #region IoC
         private IAccountRepository accountRepository;
 
-        public Account()
+        protected Account()
         {
-
         }
 
         public Account(IAccountRepository accountRepository)
@@ -41,46 +40,28 @@ namespace TestBussiness.Entity
             AccountNumber = accountRepository.GetNextAccountNumber();
             CreateDate = DateTime.Now;
             Balance = 0m;
+            accountRepository.Insert(this);
             return this;
         }
 
-        protected internal virtual Account Save()
+        protected internal virtual void Deposit(decimal amount)
         {
-            return accountRepository.Insert(this);
-        }
-
-        protected internal virtual bool Deposit(decimal amount)
-        {
-            if (accountRepository == null)
-                throw new Exception("hoaydaaa!");
             Balance += amount;
-            accountRepository.Update(this, Id);
-            return true;
         }
 
         protected internal virtual bool Withdraw(decimal amount)
         {
-            try
-            {
-                if (Balance >= amount)
-                {
-                    Balance -= amount;
-                    accountRepository.Update(this, Id);
-                    return true;
-                }
+            if (Balance < amount)
                 return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            Balance -= amount;
+            return true;
         }
 
         protected internal virtual Account SetAccountOwnerName(string firstName, string lastName)
         {
             FirstName = firstName;
             LastName = lastName;
-            return accountRepository.Update(this, Id);
+            return this;
         }
     }
 }

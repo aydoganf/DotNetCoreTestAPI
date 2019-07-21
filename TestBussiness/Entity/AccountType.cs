@@ -27,5 +27,6 @@ namespace TestBussiness.Entity
         public virtual int Id { get; protected set; }
         public virtual string TypeName { get; protected set; }
         public virtual string TypeKey { get; protected set; }
+        public virtual List<Account> Accounts { get; protected set; }
     }
 }

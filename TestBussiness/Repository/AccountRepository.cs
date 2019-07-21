@@ -42,12 +42,12 @@ namespace TestBussiness.Repository
             return "1000000";
         }
         
-        public Account GetAccountDetailById(int id)
+        public Account GetAccountById(int id)
         {
             return base.GetById(id);
         }
 
-        public Account GetAccountDetailByAccountNumber(string accountNumber)
+        public Account GetAccountByAccountNumber(string accountNumber)
         {
             return session.Query<Account>()
                     .FirstOrDefault(a => a.AccountNumber == accountNumber);

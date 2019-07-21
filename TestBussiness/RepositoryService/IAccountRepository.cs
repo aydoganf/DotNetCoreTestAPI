@@ -8,8 +8,8 @@ namespace TestBussiness.RepositoryService
     public interface IAccountRepository : IRepository<Account>
     {
         string GetNextAccountNumber();
-        Account GetAccountDetailById(int id);
-        Account GetAccountDetailByAccountNumber(string accountNumber);
+        Account GetAccountById(int id);
+        Account GetAccountByAccountNumber(string accountNumber);
         List<Account> GetAccountListByIdentityNumber(string identityNumber);
     }
 }

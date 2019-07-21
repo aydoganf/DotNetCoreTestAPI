@@ -4,26 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using TestBussiness.Context;
 using TestBussiness.Entity;
+using StructureMap;
 
 namespace TestBussiness.Connection
 {
-    public class AccountEntityInterceptor : EmptyInterceptor
+    public class DependencyInjectionEntityInterceptor : EmptyInterceptor
     {
-        IContainer _container;
-        ISession _session;
+        IContainer container;
+        ISession session;
 
-        public AccountEntityInterceptor(IContainer container)
+        public DependencyInjectionEntityInterceptor(IContainer container)
         {
-            _container = container;
+            this.container = container;
         }
 
         public override void SetSession(ISession session)
         {
-            base.SetSession(session);
-            _session = session;
+            //throw new Exception("Set session is run");
+            this.session = session ?? throw new Exception("");
+            base.SetSession(session);            
         }
+
+
 
         public override object Instantiate(string clazz, object id)
         {
@@ -31,9 +34,18 @@ namespace TestBussiness.Connection
             var hasParameter = type.GetConstructors().Any(x => x.GetParameters().Any());
             if (type != null && hasParameter)
             {
-                var instance = _container.GetInstance(type);
+                var instance = container.GetInstance(type);
 
-                var metaData = _session.SessionFactory.GetClassMetadata(clazz);
+                if (session == null)
+                {
+                    throw new Exception("ISession is null");
+                }
+
+                if (session.SessionFactory == null)
+                {
+                    throw new Exception("SessionFactory is null");
+                }
+                var metaData = session.SessionFactory.GetClassMetadata(clazz);
                 metaData.SetIdentifier(instance, id);
                 return instance;
             }

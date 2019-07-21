@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.Text;
 using TestBussiness.Connection;
-using TestBussiness.Context;
 using TestBussiness.ServiceMessage;
 using TestBussiness.Entity;
 using TestBussiness.ManagerService;
 using TestBussiness.RepositoryService;
+using StructureMap;
 
 namespace TestBussiness.Manager
 {
-    public class AccountManager : IAccountManagerService
+    public class AccountManager : IAccountManager
     {
-        private IAccountRepository accountRepository;
-        private IAccountTypeRepository accountTypeRepository;
+        private readonly IAccountRepository accountRepository;
+        private readonly IAccountTypeRepository accountTypeRepository;
+        private readonly IContainer container;
 
         public AccountManager(
+            IContainer container,
             IAccountRepository accountRepository,
             IAccountTypeRepository accountTypeRepository)
         {
+            this.container = container;
             this.accountRepository = accountRepository;
             this.accountTypeRepository = accountTypeRepository;
         }
@@ -37,22 +40,19 @@ namespace TestBussiness.Manager
                 return null;
             }
 
-            Account account = this.accountRepository
-                .Instance()
-                .With(firstName, lastName, identityNumber, accountType)
-                .Save();
-            
+            Account account = container.GetInstance<Account>()
+                .With(firstName, lastName, identityNumber, accountType);
             return account;
         }
 
         public Account GetAccountByAccountNumber(string accountNumber)
         {
-            return this.accountRepository.GetAccountDetailByAccountNumber(accountNumber);
+            return this.accountRepository.GetAccountByAccountNumber(accountNumber);
         }
 
         public Account GetAccountById(int id)
         {
-            return this.accountRepository.GetAccountDetailById(id);
+            return this.accountRepository.GetAccountById(id);
         }
 
         public List<Account> GetAccountListByIdentityNumber(string identityNumber)
@@ -66,7 +66,9 @@ namespace TestBussiness.Manager
             if (account == null)
                 return false; // todo: when account is not found this is not true response
 
-            return account.Deposit(amount);
+            account.Deposit(amount);
+            Update(account);
+            return true;
         }
 
         public bool Withdraw(string accountNumber, decimal amount)
@@ -75,7 +77,11 @@ namespace TestBussiness.Manager
             if (account == null)
                 return false; // todo: when account is not found this is not true response
 
-            return account.Withdraw(amount);
+            bool isOk = account.Withdraw(amount);
+            if (isOk)
+                Update(account);
+
+            return isOk;
         }
 
         public Account SetAccountOwnerName(string accountNumber, string firstName, string lastName)
@@ -84,7 +90,14 @@ namespace TestBussiness.Manager
             if (account == null)
                 return null;
 
-            return account.SetAccountOwnerName(firstName, lastName);
+            return Update(account.SetAccountOwnerName(firstName, lastName));
         }
+
+        #region Entity operations
+        private Account Update(Account account)
+        {
+            return accountRepository.Update(account); 
+        }
+        #endregion
     }
 }

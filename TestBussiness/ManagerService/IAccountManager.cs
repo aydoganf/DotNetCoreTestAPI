@@ -6,7 +6,7 @@ using TestBussiness.Entity;
 
 namespace TestBussiness.ManagerService
 {
-    public interface IAccountManagerService
+    public interface IAccountManager
     {
         List<Account> GetAll();
         Account GetAccountById(int id);

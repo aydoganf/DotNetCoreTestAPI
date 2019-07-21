@@ -11,12 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TestBussiness.Connection;
-using TestBussiness.Context;
 using TestBussiness.Manager;
 using TestBussiness.ManagerService;
 using TestBussiness.Repository;
 using TestBussiness.RepositoryService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using StructureMap;
 
 namespace TestWebAPI
 {
@@ -25,28 +25,17 @@ namespace TestWebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
+
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddScoped<IContainer, Container>();
-            services.AddScoped<INHibernateHelper, NHibernateHelper>();
-            //services.AddScoped<IPostRepository, PostRepository>();
-            //services.AddScoped<IPostDetailRepository, PostDetailRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IAccountTypeRepository, AccountTypeRepository>();
-
-            // managers
-            services.AddScoped<IAccountManagerService, AccountManager>();
-
-            // context scoped
-            services.AddScoped<IContext, Context>();
+            return ConfigureIoC(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +52,30 @@ namespace TestWebAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+        }
+
+        public class ServiceRegistry : Registry
+        {
+            public ServiceRegistry()
+            {
+                //For<IAccountManager>().Use<AccountManager>();
+            }
+        }
+
+        public IServiceProvider ConfigureIoC(IServiceCollection services)
+        {
+            var container = new Container(_ =>
+            {
+                _.Scan(s =>
+                {
+                    s.Assembly("TestBussiness");
+                    s.WithDefaultConventions();
+                });
+                _.AddRegistry<ServiceRegistry>();
+                _.Populate(services);
+            });
+
+            return container.GetInstance<IServiceProvider>();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace TestBussiness.Context
 {
+    [Obsolete]
     public interface IContext
     {
         T New<T>();

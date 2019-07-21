@@ -1,0 +1,16 @@
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestConsoleApp.deps.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestConsoleApp.runtimeconfig.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestConsoleApp.runtimeconfig.dev.json
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestConsoleApp.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestBussiness.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestBussiness.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.csprojAssemblyReference.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.AssemblyInfoInputs.cache
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.AssemblyInfo.cs
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.csproj.CopyComplete
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\bin\Debug\netcoreapp2.1\TestConsoleApp.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.dll
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestConsoleApp\obj\Debug\netcoreapp2.1\TestConsoleApp.pdb

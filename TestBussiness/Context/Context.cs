@@ -7,6 +7,7 @@ using TestBussiness.RepositoryService;
 
 namespace TestBussiness.Context
 {
+    [Obsolete]
     public class Context : IContext
     {
         //private INHibernateHelper nhibernateHelper;

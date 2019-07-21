@@ -11,7 +11,7 @@ namespace TestBussiness.Repository
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : IEntity
     {
-        protected INHibernateHelper nhibernateHelper;
+        protected readonly INHibernateHelper nhibernateHelper;
 
         private ISession _session;
         protected ISession session
@@ -51,6 +51,7 @@ namespace TestBussiness.Repository
             session.Delete(this.GetById(id));
         }
 
+        [Obsolete]
         public virtual T Update(T entity, int id)
         {
             // todo: think about here again
@@ -63,6 +64,13 @@ namespace TestBussiness.Repository
                 return o;
             }
             return (default);
+        }
+
+        public virtual T Update(T entity)
+        {
+            session.Update(entity);
+            session.Flush();
+            return entity;
         }
 
         public virtual T Insert(T entity)

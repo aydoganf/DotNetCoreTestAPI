@@ -5,24 +5,24 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
-using TestBussiness.Context;
+using StructureMap;
 
 namespace TestBussiness.Connection
 {
     public class NHibernateHelper : INHibernateHelper
     {
-        private readonly string _connectionString;
+        private readonly string connectionString;
         private readonly object _lockObject = new object();
         private ISessionFactory _sessionFactory;
-        private IContainer _container;
+        private IContainer container;
 
         public NHibernateHelper(IConfiguration configuration, IContainer container)
         {
-            _connectionString = configuration["ConnectionString"];
-            _container = container;
+            connectionString = configuration["ConnectionString"];
+            this.container = container;
         }
 
-        private ISessionFactory SessionFactory
+        private ISessionFactory sessionFactory
         {
             get
             {
@@ -36,7 +36,10 @@ namespace TestBussiness.Connection
 
         public ISession OpenSession()
         {
-            return SessionFactory.OpenSession();
+            //var sb = sessionFactory.WithOptions();
+            //return sb.Interceptor(new DependencyInjectionEntityInterceptor(container)).OpenSession();
+            //sessionFactory.OpenSession(new DependencyInjectionEntityInterceptor(container));
+            return sessionFactory.OpenSession();
         }
 
         private void CreateSessionFactoryAndConfigure()
@@ -45,12 +48,11 @@ namespace TestBussiness.Connection
             {
                 var fluentConfiguration = Fluently.Configure();
                 fluentConfiguration.Database(
-                    MySQLConfiguration.Standard.ConnectionString(_connectionString))
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Mappers.PostMap>())
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Mappers.PostDetailMap>())
-                    .ExposeConfiguration(c => c.SetInterceptor(new AccountEntityInterceptor(_container)))
+                    MySQLConfiguration.Standard.ConnectionString(connectionString))
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Mappers.AccountMapper>())
+                    //.ExposeConfiguration(config => 
+                    //    config.SetInterceptor(new DependencyInjectionEntityInterceptor(container)))
                     .BuildConfiguration();
-                // mappings coming here bruh!
                 
                 _sessionFactory = fluentConfiguration.BuildSessionFactory();
             }

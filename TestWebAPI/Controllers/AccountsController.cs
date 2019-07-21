@@ -17,19 +17,11 @@ namespace TestWebAPI.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private IAccountManagerService accountManagerService;
-        private IAccountRepository accountRepository;
-        private IAccountTypeRepository accountTypeRepository;
+        private readonly IAccountManager accountManagerService;
 
-        public AccountsController(
-            IAccountManagerService accountManagerService,
-            IAccountRepository accountRepository,
-            IAccountTypeRepository accountTypeRepository
-            )
+        public AccountsController(IAccountManager accountManagerService)
         {
             this.accountManagerService = accountManagerService;
-            this.accountRepository = accountRepository;
-            this.accountTypeRepository = accountTypeRepository;
         }
 
         // GET: api/Accounts
@@ -50,7 +42,7 @@ namespace TestWebAPI.Controllers
                 .GetAccountById(id);
             if (account == null)
                 return null;
-            return AccountInfoBuilder.MapToInfoInstance(account);
+            return AccountInfoBuilder.MapToDto(account);
         }
 
         [HttpGet("accountNumber/{accountNumber}")]
@@ -61,7 +53,7 @@ namespace TestWebAPI.Controllers
             if (account == null)
                 return null;
 
-            return AccountInfoBuilder.MapToInfoInstance(account);
+            return AccountInfoBuilder.MapToDto(account);
         }
 
         [HttpGet("identityNumber/{identityNumber}")]
@@ -85,7 +77,7 @@ namespace TestWebAPI.Controllers
                 accountDto.AccountTypeKey);
             if (account == null)
                 return null;
-            return AccountInfoBuilder.MapToInfoInstance(account);
+            return AccountInfoBuilder.MapToDto(account);
         }
 
         // PUT: api/Accounts/5
@@ -99,11 +91,22 @@ namespace TestWebAPI.Controllers
         {
             bool isOk = accountManagerService.Deposit(message.AccountNumber, message.Amount);
             if (!isOk)
-                throw new Exception("naaptın aga");
+                throw new Exception("not ok");
 
             Account account = accountManagerService.GetAccountByAccountNumber(message.AccountNumber);
-            return AccountInfoBuilder.MapToInfoInstance(account);
+            return AccountInfoBuilder.MapToDto(account);
 
+        }
+
+        [HttpPut("withdraw")]
+        public AccountInfo WithdrawAccount([FromBody] AccountBalanceInfoMessage message)
+        {
+            bool isOk = accountManagerService.Withdraw(message.AccountNumber, message.Amount);
+            if (!isOk)
+                throw new Exception("not ok");
+
+            Account account = accountManagerService.GetAccountByAccountNumber(message.AccountNumber);
+            return AccountInfoBuilder.MapToDto(account);
         }
 
         [HttpPut("ownerName")]
@@ -112,7 +115,7 @@ namespace TestWebAPI.Controllers
             Account account = accountManagerService
                 .SetAccountOwnerName(accountInfo.AccountNumber, accountInfo.FirstName, accountInfo.LastName);
 
-            return AccountInfoBuilder.MapToInfoInstance(account);
+            return AccountInfoBuilder.MapToDto(account);
         }
 
         // DELETE: api/ApiWithActions/5

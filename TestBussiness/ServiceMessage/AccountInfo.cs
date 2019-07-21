@@ -22,7 +22,7 @@ namespace TestBussiness.ServiceMessage
 
     public class AccountInfoBuilder
     {
-        public static AccountInfo MapToInfoInstance(Account entity)
+        public static AccountInfo MapToDto(Account entity)
         {
             return new AccountInfo()
             {
@@ -43,7 +43,7 @@ namespace TestBussiness.ServiceMessage
             List<AccountInfo> dtos = new List<AccountInfo>();
             foreach (var entity in entities)
             {
-                dtos.Add(AccountInfoBuilder.MapToInfoInstance(entity));
+                dtos.Add(AccountInfoBuilder.MapToDto(entity));
             }
             return dtos;
         }

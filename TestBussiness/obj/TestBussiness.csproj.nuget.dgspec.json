@@ -56,6 +56,10 @@
             "Mysql.Data": {
               "target": "Package",
               "version": "[8.0.16, )"
+            },
+            "StructureMap": {
+              "target": "Package",
+              "version": "[4.7.1, )"
             }
           },
           "imports": [
