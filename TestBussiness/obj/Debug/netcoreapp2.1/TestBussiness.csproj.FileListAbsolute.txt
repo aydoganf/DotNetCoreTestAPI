@@ -9,3 +9,4 @@ C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\bin\Debug\netcorea
 C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.csproj.CopyComplete
 C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.dll
 C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.pdb
+C:\Users\faruk\source\repos\NetCoreTestSolution\TestBussiness\obj\Debug\netcoreapp2.1\TestBussiness.csprojAssemblyReference.cache

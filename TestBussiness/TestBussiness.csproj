@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Context\Container.cs" />
-    <Compile Remove="Context\IContainer.cs" />
-    <Compile Remove="RepositoryService\IPostDetailRepository.cs" />
-    <Compile Remove="RepositoryService\IPostRepository.cs" />
-    <Compile Remove="Repository\PostDetailRepository.cs" />
-    <Compile Remove="Repository\PostRepository.cs" />
+    <Compile Remove="Entity\Post.cs" />
+    <Compile Remove="Entity\PostDetail.cs" />
   </ItemGroup>
 
   <ItemGroup>
