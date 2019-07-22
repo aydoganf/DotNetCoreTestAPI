@@ -9,18 +9,16 @@ namespace TestBussiness.Entity
     public class AccountType : IEntity
     {
         #region IoC
-        private INHibernateHelper nHibernateHelper;
-        private IAccountTypeRepository accountRepository;
+        private readonly IRepository<AccountType> repository;
 
         protected AccountType()
         {
 
         }
 
-        public AccountType(INHibernateHelper nHibernateHelper, IAccountTypeRepository accountTypeRepository)
+        public AccountType(IRepository<AccountType> repository)
         {
-            this.nHibernateHelper = nHibernateHelper;
-            this.accountRepository = accountTypeRepository;
+            this.repository = repository;
         }
         #endregion
 

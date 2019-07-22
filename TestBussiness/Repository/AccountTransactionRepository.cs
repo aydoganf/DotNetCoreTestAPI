@@ -1,21 +1,19 @@
-﻿using System;
+﻿using NHibernate;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TestBussiness.Connection;
+using TestBussiness.Context;
 using TestBussiness.Entity;
 using TestBussiness.RepositoryService;
 
 namespace TestBussiness.Repository
 {
-    public class AccountTransactionRepository : BaseRepository<AccountTransaction>, IAccountTransactionRepository
+    public class AccountTransactionRepository : BaseRepository<AccountTransaction>, IRepositoryQuery
     {
-        public AccountTransactionRepository(INHibernateHelper nHibernateHelper) : base(nHibernateHelper)
+        public AccountTransactionRepository(IContext context) : base(context)
         {
         }
 
-        public override AccountTransaction Instance()
-        {
-            return new AccountTransaction(this);
-        }
     }
 }

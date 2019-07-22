@@ -1,69 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using TestBussiness.Connection;
-using TestBussiness.ServiceMessage;
 using TestBussiness.Entity;
 using TestBussiness.ManagerService;
-using TestBussiness.RepositoryService;
-using StructureMap;
+using TestBussiness.Repository;
+using IContext = TestBussiness.Context.IContext;
 
 namespace TestBussiness.Manager
 {
     public class AccountManager : IAccountManager
     {
-        private readonly IAccountRepository accountRepository;
-        private readonly IAccountTypeRepository accountTypeRepository;
-        private readonly IAccountTransactionRepository accountTransactionRepository;
-        private readonly ITransactionStatusRepository transactionStatusRepository;
-        private readonly IContainer container;
+        #region IoC
+        private readonly IContext context;
 
-        public AccountManager(
-            IContainer container,
-            IAccountRepository accountRepository,
-            IAccountTypeRepository accountTypeRepository,
-            IAccountTransactionRepository accountTransactionRepository,
-            ITransactionStatusRepository transactionStatusRepository)
+        public AccountManager(IContext context)
         {
-            this.container = container;
-            this.accountRepository = accountRepository;
-            this.accountTypeRepository = accountTypeRepository;
-            this.accountTransactionRepository = accountTransactionRepository;
-            this.transactionStatusRepository = transactionStatusRepository;
+            this.context = context;
         }
+        #endregion
 
         public List<Account> GetAll()
         {
-            return accountRepository.GetAll();
+            return context.Query<AccountRepository>().GetAll();
         }
 
         public Account CreateNewAccount(string firstName, string lastName, string identityNumber, string accountTypeKey)
         {
-            AccountType accountType = this.accountTypeRepository.GetByKey(accountTypeKey);
+            AccountType accountType = context.Query<AccountTypeRepository>().GetByKey(accountTypeKey);
             if (accountType == null)
             {
                 // return null or wtf response
                 return null;
             }
 
-            Account account = container.GetInstance<Account>()
-                .With(firstName, lastName, identityNumber, accountType);
+            string accountNumber = context.Query<AccountRepository>().GetNextAccountNumber();
+            Account account = context.New<Account>()
+                .With(firstName, lastName, identityNumber, accountType, accountNumber);
             return account;
         }
 
         public Account GetAccountByAccountNumber(string accountNumber)
         {
-            return this.accountRepository.GetAccountByAccountNumber(accountNumber);
+            return context.Query<AccountRepository>().GetAccountByAccountNumber(accountNumber);
         }
 
         public Account GetAccountById(int id)
         {
-            return this.accountRepository.GetAccountById(id);
+            return context.Query<AccountRepository>().GetAccountById(id);
         }
 
         public List<Account> GetAccountListByIdentityNumber(string identityNumber)
         {
-            return this.accountRepository.GetAccountListByIdentityNumber(identityNumber);
+            return context.Query<AccountRepository>().GetAccountListByIdentityNumber(identityNumber);
         }
 
         public bool Deposit(string accountNumber, decimal amount)
@@ -81,9 +68,9 @@ namespace TestBussiness.Manager
                 Update(account);
                 depositSucceed = true;
 
-                int a = Convert.ToInt32("a");
-                var transactionStatus = transactionStatusRepository.GetByKey(TransactionStatus.SUCCEED);
-                var accountTransaction = container.GetInstance<AccountTransaction>()
+                var transactionStatus = context.Query<TransactionStatusRepository>()
+                    .GetByKey(TransactionStatus.SUCCEED);
+                var accountTransaction = context.New<AccountTransaction>()
                     .With(amount, account, transactionStatus);
                 transactionInsertationSucceed = true;
             }
@@ -95,8 +82,9 @@ namespace TestBussiness.Manager
                     account.Withdraw(amount);
                     Update(account);
 
-                    var transactionStatus = transactionStatusRepository.GetByKey(TransactionStatus.FAILED);
-                    container.GetInstance<AccountTransaction>()
+                    var transactionStatus = context.Query<TransactionStatusRepository>()
+                        .GetByKey(TransactionStatus.FAILED);
+                    context.New<AccountTransaction>()
                         .With(amount, account, transactionStatus);
                 }
                 return false;
@@ -120,8 +108,8 @@ namespace TestBussiness.Manager
                 Update(account);
                 withdrawSucceed = true;
 
-                var transactionStatus = transactionStatusRepository.GetByKey(TransactionStatus.SUCCEED);
-                container.GetInstance<AccountTransaction>()
+                var transactionStatus = context.Query<TransactionStatusRepository>().GetByKey(TransactionStatus.SUCCEED);
+                context.New<AccountTransaction>()
                     .With(-amount, account, transactionStatus);
                 transactionInsertationSucceed = true;
             }
@@ -133,8 +121,8 @@ namespace TestBussiness.Manager
                     account.Deposit(amount);
                     Update(account);
 
-                    var transactionStatus = transactionStatusRepository.GetByKey(TransactionStatus.FAILED);
-                    container.GetInstance<AccountTransaction>()
+                    var transactionStatus = context.Query<TransactionStatusRepository>().GetByKey(TransactionStatus.FAILED);
+                    context.New<AccountTransaction>()
                         .With(-amount, account, transactionStatus);
                 }
                 return false;
@@ -146,7 +134,7 @@ namespace TestBussiness.Manager
 
         public Account SetAccountOwnerName(string accountNumber, string firstName, string lastName)
         {
-            Account account = this.GetAccountByAccountNumber(accountNumber);
+            Account account = GetAccountByAccountNumber(accountNumber);
             if (account == null)
                 return null;
 
@@ -156,7 +144,7 @@ namespace TestBussiness.Manager
         #region Entity operations
         private Account Update(Account account)
         {
-            return accountRepository.Update(account); 
+            return context.Query<AccountRepository>().Update(account);
         }
         #endregion
     }

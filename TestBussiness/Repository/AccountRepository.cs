@@ -6,27 +6,19 @@ using TestBussiness.Entity;
 using TestBussiness.RepositoryService;
 using System.Linq;
 using TestBussiness.Context;
+using NHibernate;
 
 namespace TestBussiness.Repository
 {
-    public class AccountRepository : BaseRepository<Account>, IAccountRepository
+    public class AccountRepository : BaseRepository<Account>, IRepositoryQuery
     {
-        public AccountRepository(
-            INHibernateHelper nHibernateHelper
-            ) 
-            : base(nHibernateHelper)
+        public AccountRepository(IContext context) : base(context)
         {
-
-        }
-
-        public override Account Instance()
-        {
-            return new Account(this);
         }
 
         public string GetNextAccountNumber()
         {
-            List<Account> accounts = base.GetAll();
+            List<Account> accounts = GetAll();
             if (accounts.Count != 0)
             {
                 int accountNumber = 
@@ -44,20 +36,17 @@ namespace TestBussiness.Repository
         
         public Account GetAccountById(int id)
         {
-            return base.GetById(id);
+            return GetById(id);
         }
 
         public Account GetAccountByAccountNumber(string accountNumber)
         {
-            return session.Query<Account>()
-                    .FirstOrDefault(a => a.AccountNumber == accountNumber);
+            return GetBy(a => a.AccountNumber == accountNumber);
         }
 
         public List<Account> GetAccountListByIdentityNumber(string identityNumber)
         {
-            return session.Query<Account>()
-                    .Where(a => a.IdentityNumber == identityNumber)
-                    .ToList();
+            return GetListBy(a => a.IdentityNumber == identityNumber);
         }
 
     }

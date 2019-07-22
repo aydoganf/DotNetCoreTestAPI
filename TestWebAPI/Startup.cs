@@ -77,6 +77,7 @@ namespace TestWebAPI
                     s.ConnectImplementationsToTypesClosing(typeof(IControllerActionItemResponse<>));
                     s.ConnectImplementationsToTypesClosing(typeof(IControllerActionListResponse<>));
                     s.ConnectImplementationsToTypesClosing(typeof(IDtoBuilder<,>));
+                    s.ConnectImplementationsToTypesClosing(typeof(IRepository<>));
                 });
                 _.AddRegistry<ControllerActionResponseServiceRegistry>();
                 _.Populate(services);

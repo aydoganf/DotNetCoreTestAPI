@@ -7,15 +7,18 @@ namespace TestBussiness.Entity
 {
     public class AccountTransaction : IEntity
     {
-        private readonly IAccountTransactionRepository repository;
+        #region IoC
+        private readonly IRepository<AccountTransaction> repository;
+
         protected AccountTransaction()
         {
         }
 
-        public AccountTransaction(IAccountTransactionRepository repository)
+        public AccountTransaction(IRepository<AccountTransaction> repository)
         {
             this.repository = repository;
         }
+        #endregion
 
         public virtual int Id { get; protected set; }
         public virtual decimal TransactionAmount { get; protected set; }

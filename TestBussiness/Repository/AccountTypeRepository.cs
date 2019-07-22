@@ -5,27 +5,20 @@ using TestBussiness.Connection;
 using TestBussiness.Entity;
 using TestBussiness.RepositoryService;
 using System.Linq;
+using NHibernate;
+using TestBussiness.Context;
 
 namespace TestBussiness.Repository
 {
-    public class AccountTypeRepository : BaseRepository<AccountType>, IAccountTypeRepository
+    public class AccountTypeRepository : BaseRepository<AccountType>, IRepositoryQuery
     {
-        public AccountTypeRepository(INHibernateHelper nHibernateHelper) : base(nHibernateHelper)
+        public AccountTypeRepository(IContext context) : base(context)
         {
         }
 
         public AccountType GetByKey(string typeKey)
         {
-            using (var session = base.OpenSession())
-            {
-                return session.Query<AccountType>()
-                    .FirstOrDefault(at => at.TypeKey == typeKey);                    
-            }
-        }
-
-        public override AccountType Instance()
-        {
-            return new AccountType(nhibernateHelper, this);
+            return GetBy(at => at.TypeKey == typeKey);
         }
     }
 }

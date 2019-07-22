@@ -10,15 +10,15 @@ namespace TestBussiness.Entity
     public class Account : IEntity
     {
         #region IoC
-        private IAccountRepository accountRepository;
+        private IRepository<Account> repository;
 
         protected Account()
         {
         }
 
-        public Account(IAccountRepository accountRepository)
+        public Account(IRepository<Account> repository)
         {
-            this.accountRepository = accountRepository;
+            this.repository = repository;
         }
         #endregion
 
@@ -31,16 +31,21 @@ namespace TestBussiness.Entity
         public virtual decimal Balance { get; protected set; }
         public virtual AccountType AccountType { get; protected set; }
 
-        protected internal virtual Account With(string firstName, string lastName, string identityNumber, AccountType accountType)
+        protected internal virtual Account With(
+            string firstName, 
+            string lastName, 
+            string identityNumber, 
+            AccountType accountType,
+            string accountNumber)
         {
             FirstName = firstName;
             LastName = lastName;
             IdentityNumber = identityNumber;
             AccountType = accountType;
-            AccountNumber = accountRepository.GetNextAccountNumber();
+            AccountNumber = accountNumber;
             CreateDate = DateTime.Now;
             Balance = 0m;
-            accountRepository.Insert(this);
+            repository.Insert(this);
             return this;
         }
 

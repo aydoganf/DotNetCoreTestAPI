@@ -1,32 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using NHibernate;
+using StructureMap;
+using StructureMap.Pipeline;
+using System.Linq;
 using TestBussiness.Connection;
 using TestBussiness.Entity;
 using TestBussiness.RepositoryService;
 
 namespace TestBussiness.Context
 {
-    [Obsolete]
     public class Context : IContext
     {
-        //private INHibernateHelper nhibernateHelper;
-        //private IAccountRepository accountRepository;
+        private readonly IContainer container;
+        private readonly INHibernateConfigurator nhibernateConfigurator;
 
-        public Context()
+        private ISession _session;
+        private ISession session
         {
-            //this.nhibernateHelper = nHibernateHelper;
-            //this.accountRepository = accountRepository;
+            get
+            {
+                if (_session == null)
+                {
+                    _session = nhibernateConfigurator.OpenSession();
+                }
+                return _session;
+            }
         }
 
-        public T New<T>()
-        {
-            //if(typeof(Account) is T)
-            //{
-            //    return (T)Activator.CreateInstance(typeof(T), accountRepository);
-            //}
+        public ISession Session => session;
 
-            return (T)Activator.CreateInstance(typeof(T));
+        public Context(IContainer container, INHibernateConfigurator nhibernateConfigurator)
+        {
+            this.container = container;
+            this.nhibernateConfigurator = nhibernateConfigurator;
+        }
+
+        public T New<T>() where T : class
+        {
+            return container.GetInstance<T>();
+        }
+
+        public T Query<T>() where T : IRepositoryQuery
+        {
+            return container.GetInstance<T>();
         }
     }
 }

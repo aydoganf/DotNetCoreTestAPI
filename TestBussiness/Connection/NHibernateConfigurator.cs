@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentNHibernate.Cfg;
+﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.Configuration;
 using NHibernate;
-using StructureMap;
 
 namespace TestBussiness.Connection
 {
-    public class NHibernateHelper : INHibernateHelper
+    public class NHibernateConfigurator : INHibernateConfigurator
     {
         private readonly string connectionString;
         private readonly object _lockObject = new object();
         private ISessionFactory _sessionFactory;
-        private IContainer container;
 
-        public NHibernateHelper(IConfiguration configuration, IContainer container)
+        public NHibernateConfigurator(IConfiguration configuration)
         {
             connectionString = configuration["ConnectionString"];
-            this.container = container;
         }
 
         private ISessionFactory sessionFactory

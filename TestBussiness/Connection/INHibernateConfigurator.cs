@@ -2,7 +2,7 @@
 
 namespace TestBussiness.Connection
 {
-    public interface INHibernateHelper
+    public interface INHibernateConfigurator
     {
         ISession OpenSession();
     }

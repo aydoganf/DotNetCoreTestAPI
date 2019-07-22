@@ -7,16 +7,18 @@ namespace TestBussiness.Entity
 {
     public class TransactionStatus : IEntity
     {
-        private readonly ITransactionStatusRepository repository;
+        #region IoC
+        private readonly IRepository<TransactionStatus> repository;
 
         protected TransactionStatus()
         {
         }
 
-        public TransactionStatus(ITransactionStatusRepository repository)
+        public TransactionStatus(IRepository<TransactionStatus> repository)
         {
             this.repository = repository;
         }
+        #endregion
 
         public virtual int Id { get; protected set; }
         public virtual string StatusKey { get; protected set; }
